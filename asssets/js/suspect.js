@@ -42,7 +42,15 @@ function showUserDetails() {
                     document.querySelector(".car").innerHTML += "type => " + car["type"] + "</br>"
                     document.querySelector(".car").innerHTML += "color => " + car["color"] + "</br>"
                 });
-                document.querySelector(".location").innerText = "Location: " + getLocation()
+                getAlibiByUserID(users[userid]["id"]).then(function(alibi) {
+                    if (alibi === "Geen Alibi") {
+                        document.querySelector(".alibi").innerHTML = "Geen Alibi"
+                    } else {
+                        document.querySelector(".alibi").innerHTML = "Alibi: " + "</br>"
+                        document.querySelector(".alibi").innerHTML += "description => " + alibi["description"] + "</br>"
+                        document.querySelector(".alibi").innerHTML += "verified => " + alibi["verified"] + "</br>"
+                    }
+                })
             }
         }
 
