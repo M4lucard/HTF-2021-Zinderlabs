@@ -25,7 +25,7 @@ function init() {
 }
 
 function showUserDetails() {
-    fetchData("https://htf-2021.zinderlabs.com/suspect").then(function(users) {
+    fetchData("https://htf-2021.zinderlabs.com/suspect").then(function (users) {
         for (let userid in users) {
             if (window.location.search.substr(1) == users[userid]["id"]) {
                 document.querySelector("img").src = users[userid]["imgSrc"];
@@ -48,7 +48,7 @@ function showUserDetails() {
                         document.querySelector(".car").innerHTML += "color => " + car["color"] + "</br>"
                     }
                 });
-                getAlibiByUserID(users[userid]["id"]).then(function(alibi) {
+                getAlibiByUserID(users[userid]["id"]).then(function (alibi) {
                     if (alibi === "Geen Alibi") {
                         document.querySelector(".alibi").innerHTML = "Geen Alibi"
                     } else {
@@ -56,6 +56,7 @@ function showUserDetails() {
                         document.querySelector(".alibi").innerHTML += "description => " + alibi["description"] + "</br>"
                         document.querySelector(".alibi").innerHTML += "verified => " + alibi["verified"] + "</br>"
                     }
+
                 });
 
                 getSightingByUserId(users[userid]["id"]).then(function(sightings) {
@@ -63,13 +64,62 @@ function showUserDetails() {
                     for (let sighting of sightings) {
                         time.innerHTML += sighting["location"] + " van : " + sighting["startTime"] + " tot: " + sighting["endTime"] + "</br>"
                     }
+                }).then(function (userId) {
+                    document.querySelector(".score").innerHTML = "Score of suspicion: " + calculateSuspectScore(users[userid]["id"])
                 });
-
             }
         }
 
     });
 }
+
+function calculateSuspectScore(suspectId) {
+    /* 
+Iedereen start met een gelijke verdachtheid, dit wordt beïnvloed door de bewijsstukken op basis van een "gewicht". (+ -> meer verdacht | - -> minder verdacht)
+- Motief: Geen motief (-3) vs Wel een motief (+5)
+- Auto: Auto vertrokken voor de moord? (-50)
+- Alibi: Geverifieerd incorrect alibi (+15) < Geen alibi (+3) < Wel een alibi, maar nog niet geverifieerd (-3) < Geverifieerd correct alibi (-50)
+*/
+    let score = 500
+    let motiveScore = 0
+    let carScore = 0
+    let alibiScore = 0
+
+    getMotiveByUserID(suspectId).then(result => {
+        console.log(result);
+        if (result === "Geen motive") {
+            motiveScore = -3
+        } else {
+            motiveScore = 5
+            
+        }
+        console.log(motiveScore);
+        getAlibiByUserID(suspectId).then(result => {
+            console.log(result);
+            if (result = "Geen Alibi") {
+                alibiScore = 3
+            } else {
+
+                console.log(result[0]["verified"]);
+                if (result[0]["verified"]) {
+                    alibiScore = 30
+                    //split on verified correct/incorrect
+                    
+                } else {
+                    alibiScore = -3
+                }
+                
+            }
+            console.log(alibiScore);
+            return score + motiveScore + alibiScore;
+        })
+
+    
+    })
+    
+
+    
+};
 
 
 
