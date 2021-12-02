@@ -14,7 +14,8 @@
 }
 
 .container div img {
-    width: 10rem;
+    width: 13rem;
+    max-height: 15rem;
     margin-bottom: 2rem;
 }
 
@@ -22,6 +23,8 @@
     margin-top: 3rem;
     display: flex;
     justify-content: center;
+    align-items: center;
+    flex-wrap: wrap;
 }
 
 .container .flex div {
