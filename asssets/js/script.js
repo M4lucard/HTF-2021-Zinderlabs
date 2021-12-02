@@ -29,7 +29,7 @@ function fetchUsers() {
         let body = document.querySelector("body")
             //console.log(users[0])
         for (let userid in users) {
-            body.innerHTML += `<div><img src=${users[userid]["imgSrc"]} alt=${users[userid]["name"]}><p>Name: ${users[userid]["name"]}</p><a href="?id=${users[userid]["id"]}">Details</a> </div>`
+            body.innerHTML += `<div><img src=${users[userid]["imgSrc"]} alt=${users[userid]["name"]}><p>Name: ${users[userid]["name"]}</p><a href="suspect.html?${users[userid]["id"]}">Details</a> </div>`
 
         }
     });
