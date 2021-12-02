@@ -21,7 +21,6 @@ function fetchData(url) {
 }
 
 function init() {
-    console.log(window.location.search.substr(1))
     showUserDetails()
 }
 
@@ -32,15 +31,22 @@ function showUserDetails() {
                 document.querySelector("img").src = users[userid]["imgSrc"];
                 document.querySelector(".id").innerText = "ID: " + users[userid]["id"];
                 document.querySelector(".name").innerText = "Name: " + users[userid]["name"];
-                getMotiveByUserID(users[userid]["id"]).then(function (motive) {
+                getMotiveByUserID(users[userid]["id"]).then(function(motive) {
+                    if (motive === "Geen motive") {
+                        document.querySelector(".motive").innerText = "Motive: Geen";
+                    }
                     document.querySelector(".motive").innerText = "Motive: " + motive;
                 });
-                getCarByName(users[userid]["name"]).then(function (car) {
-                    document.querySelector(".car").innerHTML = "Car: " + "</br>"
-                    document.querySelector(".car").innerHTML += "licenseplate => " + car["licenseplate"] + "</br>"
-                    document.querySelector(".car").innerHTML += "manufacturer => " + car["manufacturer"] + "</br>"
-                    document.querySelector(".car").innerHTML += "type => " + car["type"] + "</br>"
-                    document.querySelector(".car").innerHTML += "color => " + car["color"] + "</br>"
+                getCarByName(users[userid]["name"]).then(function(car) {
+                    if (car === "No Car") {
+                        document.querySelector(".car").innerHTML = "No Car";
+                    } else {
+                        document.querySelector(".car").innerHTML = "Car: " + "</br>"
+                        document.querySelector(".car").innerHTML += "licenseplate => " + car["licenseplate"] + "</br>"
+                        document.querySelector(".car").innerHTML += "manufacturer => " + car["manufacturer"] + "</br>"
+                        document.querySelector(".car").innerHTML += "type => " + car["type"] + "</br>"
+                        document.querySelector(".car").innerHTML += "color => " + car["color"] + "</br>"
+                    }
                 });
                 getAlibiByUserID(users[userid]["id"]).then(function (alibi) {
                     if (alibi === "Geen Alibi") {
@@ -50,11 +56,17 @@ function showUserDetails() {
                         document.querySelector(".alibi").innerHTML += "description => " + alibi["description"] + "</br>"
                         document.querySelector(".alibi").innerHTML += "verified => " + alibi["verified"] + "</br>"
                     }
+
+                });
+
+                getSightingByUserId(users[userid]["id"]).then(function(sightings) {
+                    let time = document.querySelector(".time");
+                    for (let sighting of sightings) {
+                        time.innerHTML += sighting["location"] + " van : " + sighting["startTime"] + " tot: " + sighting["endTime"] + "</br>"
+                    }
                 }).then(function (userId) {
                     document.querySelector(".score").innerHTML = "Score of suspicion: " + calculateSuspectScore(users[userid]["id"])
                 });
-
-
             }
         }
 
