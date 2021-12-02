@@ -33,7 +33,13 @@ function showUserDetails() {
                 document.querySelector(".id").innerText = "ID: " + users[userid]["id"];
                 document.querySelector(".name").innerText = "Name: " + users[userid]["name"];
                 document.querySelector(".motive").innerText = "Motive: " + getMotive()
-                document.querySelector(".car").innerText = "Car: " + getCar()
+                getCarByName(users[userid]["name"]).then(function(car) {
+                    document.querySelector(".car").innerHTML = "Car: " + "</br>"
+                    document.querySelector(".car").innerHTML += "licenseplate => " + car["licenseplate"] + "</br>"
+                    document.querySelector(".car").innerHTML += "manufacturer => " + car["manufacturer"] + "</br>"
+                    document.querySelector(".car").innerHTML += "type => " + car["type"] + "</br>"
+                    document.querySelector(".car").innerHTML += "color => " + car["color"] + "</br>"
+                });
                 document.querySelector(".location").innerText = "Location: " + getLocation()
             }
         }
@@ -41,9 +47,7 @@ function showUserDetails() {
     });
 }
 
-function getCar() {
-    return "TODO";
-}
+
 
 function getLocation() {
     return "TODO";
