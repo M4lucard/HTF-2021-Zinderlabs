@@ -18,7 +18,7 @@ function fetchData(url) {
     };
 
     return fetch(url, requestOptions)
-        .then(response => response.text())
+        .then(response => response.json())
         .then(result => { return result })
         .catch(error => console.log('error', error));
 
@@ -27,8 +27,9 @@ function fetchData(url) {
 function fetchUsers() {
     fetchData("https://htf-2021.zinderlabs.com/suspect").then(function(users) {
         let body = document.querySelector("body")
-        for (let user of users) {
-            body.innerHTML += user;
+            //console.log(users[0])
+        for (let userid in users) {
+            body.innerHTML += `<div><img src=${users[userid]["imgSrc"]} alt=${users[userid]["name"]}><p>Name: ${users[userid]["name"]}</p><a href="?id=${users[userid]["id"]}">Details</a> </div>`
 
         }
     });
