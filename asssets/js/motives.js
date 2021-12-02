@@ -3,7 +3,7 @@
 document.addEventListener("DOMContentLoaded", init);
 
 function init() {
-    fetchSuspects()
+    fetchMotives()
 }
 
 
@@ -24,13 +24,15 @@ function fetchData(url) {
 
 }
 
-function fetchSuspects() {
-    fetchData("https://htf-2021.zinderlabs.com/suspect").then(function(suspects) {
+function fetchMotives() {
+    fetchData(`https://htf-2021.zinderlabs.com/motive`).then(function(motives){
         let body = document.querySelector("body")
-
-        for (let suspectId in suspects) {
-            body.innerHTML += `<div><img src=${suspects[suspectId]["imgSrc"]} alt=${suspects[suspectId]["name"]}><p>Name: ${suspects[suspectId]["name"]}</p><a href="suspect.html?${suspects[suspectId]["id"]}">Details</a> <p id="score">Score: 1 </p></div>` //${score}
+            
+        for (let motive in motives) {
+            body.innerHTML += `<div> <p>${motives[motive]["text"]}</p><p>${motives[motive]["suspectId"]}</p></div>` 
 
         }
+    
     });
 }
+
