@@ -24,13 +24,21 @@ function fetchData(url) {
 
 }
 
-function fetchUsers() {
-    fetchData("https://htf-2021.zinderlabs.com/suspect").then(function(users) {
+function fetchSuspects() {
+    fetchData("https://htf-2021.zinderlabs.com/suspect").then(function(suspects) {
         let body = document.querySelector("body")
-            //console.log(users[0])
-        for (let userid in users) {
-            body.innerHTML += `<div><img src=${users[userid]["imgSrc"]} alt=${users[userid]["name"]}><p>Name: ${users[userid]["name"]}</p><a href="?id=${users[userid]["id"]}">Details</a> </div>`
+            
+        for (let suspectId in suspects) {
+            let score = await fetchMotive(suspects[suspectId]["id"]);
+            body.innerHTML += `<div><img src=${suspects[suspectId]["imgSrc"]} alt=${suspects[suspectId]["name"]}><p>Name: ${suspects[suspectId]["name"]}</p><a href="?id=${suspects[suspectId]["id"]}">Details</a> <p id="score">Score: 1 </p></div>` //${score}
 
         }
+    });
+}
+
+async function fetchMotive(suspectId) {
+    fetchData(`https://htf-2021.zinderlabs.com/suspect/${suspect}`).then(function(motive){
+        console.log(motive)
+
     });
 }
