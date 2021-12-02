@@ -2,10 +2,14 @@
 
 document.addEventListener("DOMContentLoaded", init);
 
+function init() {
+    fetchUsers()
+}
 
-function fetchData() {
+
+function fetchData(url) {
     const myHeaders = new Headers();
-    myHeaders.append("userId", "yourUserId");
+    myHeaders.append("userId", "unkindled820");
 
     const requestOptions = {
         method: 'GET',
@@ -13,9 +17,19 @@ function fetchData() {
         redirect: 'follow'
     };
 
-    fetch("https://htf-2021.zinderlabs.com/uri", requestOptions)
+    return fetch(url, requestOptions)
         .then(response => response.text())
-        .then(result => console.log(result))
+        .then(result => { return result })
         .catch(error => console.log('error', error));
 
+}
+
+function fetchUsers() {
+    fetchData("https://htf-2021.zinderlabs.com/suspect").then(function(users) {
+        let body = document.querySelector("body")
+        for (let user of users) {
+            body.innerHTML += user;
+
+        }
+    });
 }
