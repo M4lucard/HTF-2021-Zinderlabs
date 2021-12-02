@@ -44,6 +44,9 @@ function getAllMotives() {
 
 function getMotiveByUserID(id) {
     return fetchData(`https://htf-2021.zinderlabs.com/motive/${id}`).then(function(motive) {
+        if (motive === undefined) {
+            return "Geen motive"
+        }
         return motive.text;
     });
 }
